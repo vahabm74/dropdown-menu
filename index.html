@@ -11,6 +11,32 @@
       .main-nav{
         width:16.5rem;
         background:#ccc;
+        -webkit-transition: all ease 300ms;
+        transition: all ease 300ms;
+      }
+      .main-nav.hide{
+        -webkit-transform: translateX(-16.5rem);
+        transform: translateX(-16.5rem);
+      }
+      .main-nav .toggle-nav{
+        position: absolute;
+        right: -18px;
+        top: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #092d41;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        box-shadow: 6px 0px 19px rgb(0 0 0 / 20%);
+      }
+      .main-nav.hide .toggle-nav{
+        right: -27px;
+      }
+      .main-nav.hide .toggle-nav svg{
+        transform: rotate(180deg);
       }
       #banner{
         background: linear-gradient(0deg, rgb(4, 56, 77) 0%, rgb(10, 45, 65) 100%);
@@ -29,6 +55,21 @@
         background: rgb(179,101,24);
         border-radius: 30px;
       }
+      #banner nav ol li.has-child{
+        position: relative;
+      }
+      #banner nav ol li.has-child > svg{
+        position: absolute;
+        right: 0;
+        top: 11px;
+        pointer-events: none;
+        -webkit-transition: all ease 300ms;
+        transition: all ease 300ms;
+      }
+      #banner nav ol li.has-child > svg.up{
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
       #banner nav ol li a{
         padding-top:0.7rem;
         padding-bottom:0.7rem;
@@ -43,6 +84,9 @@
       #banner nav ul.submenu.show{
         display: block;
       }
+      #banner nav ul.submenu li{
+        margin-bottom: 5px;
+      }
       #banner nav ul.submenu li a{
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
@@ -55,7 +99,10 @@
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
       }
-      #banner nav ul.submenu li a.current-nav span{
+      #banner nav ul.submenu li a:hover{
+        background: #135875;
+      }
+      #banner nav ul.submenu li a.current-nav span,#banner nav ul.submenu li a:hover span{
         color:#fff;
       }
       #banner .manage-account{
@@ -85,9 +132,23 @@
         font-size:12px;
         white-space:nowrap;
       }
+      .main-page .main-content{
+        padding-left: 16.5rem;
+        -webkit-transition: all ease 300ms;
+        transition: all ease 300ms;
+      }
+      .main-page .main-content.wide{
+        padding-left: 0;
+      }
     </style>
     <div class="relative overflow-hidden main-page" role="group" tabindex="-1" x-data="{ headerIsOpen: false }" @keydown.escape.window="headerIsOpen = false" x-on:resize.window="if (window.outerWidth > 768) headerIsOpen = false">
       <div class="main-nav fixed z-20 flex h-screen transition-transform duration-200 transform ltr:md:translate-x-0 rtl:md:translate-x-0 ltr:-translate-x-full rtl:translate-x-full" :class="headerIsOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'">
+        <!-- show and hide navbar-->
+        <a href="#!" class="toggle-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        </a>
         <header role="banner" id="banner" tabindex="-1" class="flex flex-col flex-grow space-y-4 overflow-y-hidden text-gray-400 bg-gray-800 shadow-lg md:shadow-none">
           <!--logo box-->
           <a href="#!" class="flex items-center p-4 space-x-3 rtl:space-x-reverse group" rel="home" target="_blank">
@@ -115,13 +176,19 @@
                   <span class="flex-grow text-sm font-medium leading-tight">Personal Data</span>
                 </a>
               </li>
+              <!-- if li tag has submenu : it has class 'has-child'-->
               <li class="has-child">
+                <!-- if li has child this svg icon will be show-->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
                 <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
                   <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
                   <span class="flex-grow text-sm font-medium leading-tight">Calendar</span>
                 </a>
+                <!--Submenu of li tag -->
                 <ul class="submenu">
                   <li>
                     <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-white current-nav">
@@ -140,21 +207,95 @@
                   </li>
                 </ul>
               </li>
-              <li>
+              <li class="has-child">
+                <!-- if li has child this svg icon will be show-->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
                 <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
                   <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                   </svg>
                   <span class="flex-grow text-sm font-medium leading-tight">Reports</span>
                 </a>
+                <!--Submenu of li tag -->
+                <ul class="submenu">
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-white current-nav">
+                      <span class="flex-grow text-sm font-medium leading-tight">Report</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">User report</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">User logs</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">User Delay</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">User work</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li>
+              <li class="has-child">
+                <!-- if li has child this svg icon will be show-->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
                 <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
                   <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
                   </svg>
                   <span class="flex-grow text-sm font-medium leading-tight">Settings</span>
                 </a>
+                <!--Submenu of li tag -->
+                <ul class="submenu">
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-white current-nav">
+                      <span class="flex-grow text-sm font-medium leading-tight">Countries</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Points</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Areas</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Reasons</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Platforms</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Leave Types</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
+                      <span class="flex-grow text-sm font-medium leading-tight">Settings</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="#!" class="px-4 py-3 flex items-center space-x-3 rtl:space-x-reverse rounded transition-color duration-200 hover:text-white text-current">
@@ -230,14 +371,27 @@
           </div>
         </header>
       </div>
+      <div class="flex flex-col w-full min-h-screen main-content">
+
+      </div>
     </div>
     <script type="text/javascript">
     document.querySelectorAll('.has-child').forEach((it) => {
       const subMenu = it.querySelector('.submenu');
+      const icon = it.querySelector('.h-5');
       it.addEventListener('click', (ev) => {
          ev.preventDefault();
          subMenu.classList.toggle('show');
       });
+      it.addEventListener('click', (ev) => {
+         ev.preventDefault();
+         icon.classList.toggle('up');
+      });
+    });
+    const toggleNav = document.querySelector('.toggle-nav');
+    toggleNav.addEventListener('click',(ev) => {
+      document.querySelector('.main-nav').classList.toggle('hide');
+      document.querySelector('.main-content').classList.toggle('wide');
     });
     </script>
   </body>
